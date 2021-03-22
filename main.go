@@ -63,8 +63,9 @@ func main() {
 				AssignTo: &ActionsMenu,
 				Items: []MenuItem{
 					Action{
-						AssignTo: &CalculateAction,
-						Text:     "&Calculate minimum distance",
+						AssignTo:    &CalculateAction,
+						Text:        "&Calculate minimum distance",
+						OnTriggered: NewMainForm.CalculateAction_Triggered,
 					},
 				},
 			},
@@ -131,22 +132,7 @@ func ReadFile(FileName string) (Error error) {
 	Reader.Comma = ';'
 	Reader.Comment = '#'
 
-	//Record, Error := Reader.Read()
-	//if Error != nil {
-	//	log.Println(Error)
-	//	return Error
-	//}
-
-	//n, Error := strconv.Atoi(Record[0])
-	//m, Error := strconv.Atoi(Record[1])
-
-	//log.Println("Table size: ", n, m)
-
 	GraphTable := make([][]int, 0)
-
-	//for i := range GraphTable {
-	//	GraphTable[i] = make([]int, m)
-	//}
 
 	for {
 		Record, Error := Reader.Read()
@@ -161,6 +147,9 @@ func ReadFile(FileName string) (Error error) {
 
 		for j := 0; j < m; j++ {
 			GraphColumn[j], Error = strconv.Atoi(Record[j])
+			if Error != nil {
+				log.Println(Error)
+			}
 		}
 
 		GraphTable = append(GraphTable, GraphColumn)
@@ -205,4 +194,8 @@ func (owner *MainForm) SaveAction_Triggered() {
 	if FileName, Error := SaveFile(owner, InitDirectory); Error == nil {
 		WriteFile(FileName)
 	}
+}
+
+func (owner *MainForm) CalculateAction_Triggered() {
+
 }
