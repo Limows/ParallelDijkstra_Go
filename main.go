@@ -1,4 +1,4 @@
-// Test
+// Dijkstra
 package main
 
 import (
@@ -127,7 +127,7 @@ func ReadFile(FileName string) (Error error) {
 	log.Println("File Opened")
 
 	Reader := csv.NewReader(File)
-	
+
 	Reader.Comma = ';'
 	Reader.Comment = '#'
 
@@ -139,7 +139,7 @@ func ReadFile(FileName string) (Error error) {
 
 	//n, Error := strconv.Atoi(Record[0])
 	//m, Error := strconv.Atoi(Record[1])
-	
+
 	//log.Println("Table size: ", n, m)
 
 	GraphTable := make([][]int, 0)
@@ -167,8 +167,6 @@ func ReadFile(FileName string) (Error error) {
 
 		log.Println("Value: ", GraphColumn)
 	}
-
-
 
 	return nil
 }
@@ -199,7 +197,7 @@ func (owner *MainForm) OpenAction_Triggered() {
 }
 
 func WriteFile(FileName string) {
-	
+
 }
 
 func (owner *MainForm) SaveAction_Triggered() {

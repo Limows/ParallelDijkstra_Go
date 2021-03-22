@@ -6,7 +6,7 @@
         {
             "label": "Build",
             "type": "shell",
-            "command": "go build",
+            "command": "go build -o Dijkstra.exe",
             "problemMatcher": [],
             "group": {
                 "kind": "build",
@@ -17,7 +17,7 @@
         {
             "label": "Build without console",
             "type": "shell",
-            "command": "go build -ldflags='-H windowsgui'",
+            "command": "go build -o Dijkstra.exe -ldflags='-H windowsgui'",
             "problemMatcher": [],
             "group": {
                 "kind": "build",
