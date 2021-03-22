@@ -15,10 +15,6 @@ type MainForm struct {
 	*walk.MainWindow
 }
 
-type DialogForm struct {
-	*walk.Dialog
-}
-
 var InitDirectory string = ""
 
 func main() {
@@ -76,8 +72,9 @@ func main() {
 				AssignTo: &HelpMenu,
 				Items: []MenuItem{
 					Action{
-						AssignTo: &AboutBoxAction,
-						Text:     "&About",
+						AssignTo:    &AboutBoxAction,
+						Text:        "&About",
+						OnTriggered: NewMainForm.AboutBoxAction_Triggered,
 					},
 				},
 			},
@@ -274,4 +271,8 @@ func (owner *MainForm) CalculateAction_Triggered() {
 
 func (owner *MainForm) CalculateButton_Clicked() {
 
+}
+
+func (owner *MainForm) AboutBoxAction_Triggered() {
+	walk.MsgBox(owner, "About", "This is parallel modification of Dijkstra algorithm\n\nAuthor: Limows\n\nVersion: 0.3", walk.MsgBoxIconInformation)
 }
