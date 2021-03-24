@@ -87,6 +87,18 @@ func main() {
 				Model:            GraphTableModel,
 			},
 
+			Label{
+				Text: "&Number of rows",
+			},
+
+			NumberEdit{},
+
+			Label{
+				Text: "&Number of columns",
+			},
+
+			NumberEdit{},
+
 			PushButton{
 				AssignTo:  &CalculateButton,
 				Text:      "&Calculate minimum distance",
