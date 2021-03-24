@@ -12,6 +12,9 @@ func main() {
 	var OpenAction, NewAction, SaveAction, CalculateAction, AboutBoxAction *walk.Action
 	var FileMenu, ActionsMenu, HelpMenu *walk.Menu
 	var CalculateButton *walk.PushButton
+	var GraphTableView *walk.TableView
+	var MinDistLabel *walk.Label
+	GraphTableModel := NewGraphModel()
 	NewMainForm := new(MainForm)
 
 	MainWindow{
@@ -72,7 +75,17 @@ func main() {
 		},
 
 		Children: []Widget{
-			TableView{},
+			Label{
+				Name: "&GraphTableLable",
+				Text: "&Graph Adjacency Table",
+			},
+
+			TableView{
+				AssignTo:         &GraphTableView,
+				ColumnsOrderable: true,
+				Columns:          []TableViewColumn{},
+				Model:            GraphTableModel,
+			},
 
 			PushButton{
 				AssignTo:  &CalculateButton,
@@ -81,7 +94,9 @@ func main() {
 			},
 
 			Label{
-				Text: "&Minimum distance: ",
+				AssignTo: &MinDistLabel,
+				Name:     "&MinDistLabel",
+				Text:     "&Minimum distance: ",
 			},
 		},
 	}.Run()
@@ -131,6 +146,11 @@ func (owner *MainForm) OpenAction_Triggered() {
 
 	if FileName, Error := OpenFile(owner, InitDirectory); Error == nil {
 		Error = ReadFile(FileName)
+
+		if Error != nil {
+			walk.MsgBox(owner, "Error", "Can't read file!", walk.MsgBoxIconError)
+			log.Println("Can't read file!")
+		}
 	}
 }
 
