@@ -14,8 +14,8 @@ func main() {
 	var CalculateButton *walk.PushButton
 	var GraphTableView *walk.TableView
 	var MinDistLabel *walk.Label
-	GraphTableModel := NewGraphModel()
-	NewMainForm := new(MainForm)
+	var GraphTableModel = NewGraphModel()
+	var NewMainForm = new(MainForm)
 
 	MainWindow{
 		Title:    "GraphMinDist",
@@ -121,9 +121,9 @@ func OpenFile(Owner walk.Form, InitDirectory string) (FileName string, Error err
 	FileDialog.Filter = "CSV files(*.csv)|*.csv"
 	FileDialog.InitialDirPath = InitDirectory
 
-	if OK, Error := FileDialog.ShowOpen(Owner); Error != nil {
-		log.Println(Error)
-		return "", Error
+	if OK, err := FileDialog.ShowOpen(Owner); err != nil {
+		log.Println(err)
+		return "", err
 	} else if !OK {
 		return "", nil
 	}
@@ -142,9 +142,9 @@ func SaveFile(Owner walk.Form, InitDirectory string) (FileName string, Error err
 	FileDialog.Filter = "CSV files(*.csv)|*.csv"
 	FileDialog.InitialDirPath = InitDirectory
 
-	if OK, Error := FileDialog.ShowSave(Owner); Error != nil {
-		log.Println(Error)
-		return "", Error
+	if OK, err := FileDialog.ShowSave(Owner); err != nil {
+		log.Println(err)
+		return "", err
 	} else if !OK {
 		return "", nil
 	}
@@ -156,10 +156,16 @@ func SaveFile(Owner walk.Form, InitDirectory string) (FileName string, Error err
 
 func (owner *MainForm) OpenAction_Triggered() {
 
-	if FileName, Error := OpenFile(owner, InitDirectory); Error == nil {
-		Error = ReadFile(FileName)
+	if FileName, err := OpenFile(owner, InitDirectory); err == nil {
+		GraphTable, err := ReadFile(FileName)
 
-		if Error != nil {
+		GraphTableModel.items = GraphTable
+
+		log.Println(GraphTableModel.Value(0, 0))
+
+		GraphTableModel.PublishRowsReset()
+
+		if err != nil {
 			walk.MsgBox(owner, "Error", "Can't read file!", walk.MsgBoxIconError)
 			log.Println("Can't read file!")
 		}
@@ -168,12 +174,18 @@ func (owner *MainForm) OpenAction_Triggered() {
 
 func (owner *MainForm) SaveAction_Triggered() {
 
-	if FileName, Error := SaveFile(owner, InitDirectory); Error == nil {
-		WriteFile(FileName)
+	if FileName, err := SaveFile(owner, InitDirectory); err == nil {
+		err = WriteFile(FileName)
+
+		if err != nil {
+			walk.MsgBox(owner, "Error", "Can't write file!", walk.MsgBoxIconError)
+			log.Println("Can't write file!")
+		}
 	}
 }
 
 func (owner *MainForm) CalculateAction_Triggered() {
+	//DijkstraSequential(Size, GraphTable)
 
 }
 

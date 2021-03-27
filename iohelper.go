@@ -8,13 +8,13 @@ import (
 	"strconv"
 )
 
-func ReadFile(FileName string) (Error error) {
+func ReadFile(FileName string) (GraphTable [][]int, Error error) {
 
-	File, Error := os.Open(FileName)
-	if Error != nil {
+	File, err := os.Open(FileName)
+	if err != nil {
 		File.Close()
 		log.Println(Error)
-		return Error
+		return nil, Error
 	}
 
 	log.Println("File Opened")
@@ -24,11 +24,11 @@ func ReadFile(FileName string) (Error error) {
 	Reader.Comma = ';'
 	Reader.Comment = '#'
 
-	GraphTable := make([][]int, 0)
+	GraphTable = make([][]int, 0)
 
 	for {
-		Record, Error := Reader.Read()
-		if Error != nil {
+		Record, err := Reader.Read()
+		if err != nil {
 			log.Println(Error)
 			break
 		}
@@ -38,8 +38,8 @@ func ReadFile(FileName string) (Error error) {
 		GraphColumn := make([]int, m)
 
 		for j := 0; j < m; j++ {
-			GraphColumn[j], Error = strconv.Atoi(Record[j])
-			if Error != nil {
+			GraphColumn[j], err = strconv.Atoi(Record[j])
+			if err != nil {
 				log.Println(Error)
 			}
 		}
@@ -49,9 +49,9 @@ func ReadFile(FileName string) (Error error) {
 		log.Println("Value: ", GraphColumn)
 	}
 
-	return nil
+	return GraphTable, nil
 }
 
-func WriteFile(FileName string) {
-
+func WriteFile(FileName string) (Error error) {
+	return nil
 }

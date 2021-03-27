@@ -5,11 +5,11 @@ import (
 	"log"
 )
 
-func DijkstraSequential(Size int, GraphTable [][]int) {
-	Distances := make([]int, Size) // минимальное расстояние
-	Vertexes := make([]int, Size)  // посещенные вершины
-	var temp, minindex, min int
-	begin_index := 0
+func DijkstraSequential(Size int, GraphTable [][]int) (Results []string) {
+	var Distances = make([]int, Size) // минимальное расстояние
+	var Vertexes = make([]int, Size)  // посещенные вершины
+	var Temp, MinIndex, Min int
+	var BeginIndex = 0
 
 	//Инициализация вершин и расстояний
 	for i := 0; i < Size; i++ {
@@ -17,38 +17,42 @@ func DijkstraSequential(Size int, GraphTable [][]int) {
 		Vertexes[i] = 1
 	}
 
-	Distances[begin_index] = 0
+	Distances[BeginIndex] = 0
 	// Шаг алгоритма
-	for minindex < 10000 {
-		minindex = 10000
-		min = 10000
+	for MinIndex < 10000 {
+		MinIndex = 10000
+		Min = 10000
 
 		for i := 0; i < Size; i++ {
 
-			if (Vertexes[i] == 1) && (Distances[i] < min) { // Если вершину ещё не обошли и вес меньше min
+			if (Vertexes[i] == 1) && (Distances[i] < Min) { // Если вершину ещё не обошли и вес меньше min
 				// Переприсваиваем значения
-				min = Distances[i]
-				minindex = i
+				Min = Distances[i]
+				MinIndex = i
 			}
 		}
 		// Добавляем найденный минимальный вес
 		// к текущему весу вершины
 		// и сравниваем с текущим минимальным весом вершины
-		if minindex != 10000 {
+		if MinIndex != 10000 {
 			for i := 0; i < Size; i++ {
-				if GraphTable[minindex][i] > 0 {
-					temp = min + GraphTable[minindex][i]
-					if temp < Distances[i] {
-						Distances[i] = temp
+				if GraphTable[MinIndex][i] > 0 {
+					Temp = Min + GraphTable[MinIndex][i]
+					if Temp < Distances[i] {
+						Distances[i] = Temp
 					}
 				}
 			}
-			Vertexes[minindex] = 0
+			Vertexes[MinIndex] = 0
 		}
 	}
 
 	// Вывод кратчайших расстояний до вершин
-	log.Println("MinDist: ")
+	log.Println("Mininal distances to vertexes: ")
+
+	for i := 0; i < Size; i++ {
+		log.Println(Distances[i], " ")
+	}
 
 	// Восстановление пути
 	UsedVertexes := make([]int, Size) // массив посещенных вершин
@@ -57,7 +61,7 @@ func DijkstraSequential(Size int, GraphTable [][]int) {
 	k := 1                            // индекс предыдущей вершины
 	weight := Distances[end]          // вес конечной вершины
 
-	for end != begin_index { // пока не дошли до начальной вершины
+	for end != BeginIndex { // пока не дошли до начальной вершины
 		for i := 0; i < Size; i++ { // просматриваем все вершины
 			if GraphTable[i][end] != 0 { // если связь есть
 				temp := weight - GraphTable[i][end] // определяем вес пути из предыдущей вершины
@@ -73,5 +77,11 @@ func DijkstraSequential(Size int, GraphTable [][]int) {
 	}
 
 	// Вывод пути (начальная вершина оказалась в конце массива из k элементов)
-	log.Println("MinDist: ")
+	log.Println("Shortest Way:")
+
+	for i := k - 1; i >= 0; i-- {
+		log.Println(Vertexes[i], " ")
+	}
+
+	return nil
 }

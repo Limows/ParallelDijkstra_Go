@@ -67,3 +67,5 @@ func (model *GraphModel) ResetRows() {
 }
 
 var InitDirectory string = ""
+
+var GraphTableModel GraphModel
